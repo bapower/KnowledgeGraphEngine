@@ -19,8 +19,22 @@ import java.util.*;
  * 
  */
 public class KnowledgeGraph {
+	
+		// association for maintaining the active set of Nodes 
+		private static Map<String, Node> nodeMap = new HashMap<String, Node>();
 		
+		// association for maintaining the active set of Predicates 
+		private static Map<String, Predicate> predicateMap = new HashMap<String, Predicate>();
+		
+		// association for maintaining the active set of Predicates 
+		private static Map<String, Triple> tripleMap = new HashMap<String, Triple>();
+			
+		// association for maintaining a fast query lookup map
+		private static Map<String, Set<Triple>> queryMapSet = new HashMap<String, Set<Triple>>();
+		
+		// singleton instance of this class
 		private static KnowledgeGraph instance = null;
+		
 		
 		/**
 		 * This method returns a reference to the single static 
@@ -29,12 +43,110 @@ public class KnowledgeGraph {
 		 */
 		protected KnowledgeGraph() {
 		      // instantiation is protected
-		   }
-		   public static KnowledgeGraph getInstance() {
+		}
+		
+		public static KnowledgeGraph getInstance() {
 		      if(instance == null) {
 		         instance = new KnowledgeGraph();
 		      }
 		      return instance;
-		   }
+	    }
+				
+
+		/**
+		 * Public method for adding a Triple to the KnowledgeGraph.
+		 * @param subject
+		 * @param predicate
+		 * @param obje2ct
+		 */
+		public static void importTriple(String subjectIdentifier, String predicateIdentifier, String objectIdentifier) {
+	        Node subject = new Node(subjectIdentifier);
+	        Node object = new Node(objectIdentifier);
+	        Predicate predicate = new Predicate(predicateIdentifier);
+	        Triple triple = new Triple(predicateIdentifier, predicateIdentifier, objectIdentifier);
+	        
+			nodeMap.put(subjectIdentifier, subject);
+			nodeMap.put(objectIdentifier, object);
+			predicateMap.put(predicateIdentifier, predicate);
+			tripleMap.put(triple.getIdentifier(), triple);
 			
+			addPermutationToQueryMapSet(subjectIdentifier+" "+predicateIdentifier+" "+objectIdentifier, triple);
+			addPermutationToQueryMapSet(subjectIdentifier+" "+predicateIdentifier+" ?", triple);
+			addPermutationToQueryMapSet(subjectIdentifier+" ? "+objectIdentifier, triple);
+			addPermutationToQueryMapSet(subjectIdentifier+" ? ?", triple);
+			addPermutationToQueryMapSet("? "+predicateIdentifier+" "+objectIdentifier, triple);
+			addPermutationToQueryMapSet("? "+predicateIdentifier+" ?", triple);
+			addPermutationToQueryMapSet("? ? "+objectIdentifier, triple);
+			addPermutationToQueryMapSet("? ? ?", triple);
+			
+	    }
+		
+		private static void addPermutationToQueryMapSet (String permutation, Triple triple) {
+			if(!queryMapSet.containsKey(permutation)) {
+				Set<Triple> tripleSet = new HashSet<Triple>();
+				tripleSet.add(triple);
+				queryMapSet.put(permutation, tripleSet);
+			} else {
+				Set<Triple> tripleSet = queryMapSet.get(permutation);
+				if(!tripleSet.contains(triple)){
+					tripleSet.add(triple);
+				}
+				queryMapSet.put(permutation, tripleSet);	
+			}
+		}
+		
+		// returns a set of matching triples
+		// inputs form of a triple
+		// don't return anything redundant.
+		public Set<Triple> executeQuery(String subject, String Predicate, String Object) {
+	        // ...
+	    }
+		
+		// singleton - only one instance of the knowledge graph.
+		KnowledgeGraph knowledgeGraph = new KnowledgeGraph();
+		
+		
+	
+		
+		/**
+		 * 
+		 * @param identifier
+		 * @return
+		 */
+		Node getNode (String identifier){
+			// Update this method to use a nodeMap to look up a node. 
+			// If the node doesn't exist, create it and add it to the map
+		}
+		
+		/**
+		 * 
+		 * @param identifier
+		 * @return
+		 */
+		Predicate getPredicate (String identifier){
+			// Update this method to use predicateMap to look up a predicate. 
+			// If the predicate doesn't exist, create it and add it to the map
+		}
+		
+		/**
+		 * 
+		 * @param identifier
+		 * @return
+		 */
+		Triple getTriple (Node subject, Predicate predicate, Node object){
+			// Update this method to use tripleMap to look up a triple. 
+			// If the triple doesn't exist, create it and add it to the map
+		}
+		
+		
+
+		public static void main (String args[]) {
+			
+			String fileName = "inputTriples.nt";
+			Importer input = new Importer();
+			input.importTripleFile(fileName);
+			
+		
+		}
+	
 }
