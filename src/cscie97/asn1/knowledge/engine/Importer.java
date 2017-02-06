@@ -37,20 +37,10 @@ public class Importer {
 				
 				if(token.hasMoreTokens())
 					subjectInput = token.nextToken();
-//					if (subjectInput != null) { 
-//						subjectInput = subjectInput.toLowerCase();
-//					}
 				if(token.hasMoreTokens())
 					predicateInput = token.nextToken();
-//					if (predicateInput != null) { 
-//						predicateInput = predicateInput.toLowerCase();
-//					}
 				if(token.hasMoreTokens())
 					objectInput = token.nextToken();
-//					if (objectInput != null) { 
-//						objectInput = objectInput.replace(".", "").toLowerCase();
-//					}
-				
 				if (predicateInput != null && predicateInput != null && objectInput != null) {
 					KnowledgeGraph.importTriple(subjectInput, predicateInput, objectInput);
 				}
@@ -59,5 +49,4 @@ public class Importer {
 			e.printStackTrace();
 		}
 	}
-	
 }

@@ -6,7 +6,6 @@ import java.io.FileReader;
 import java.io.IOException;
 import java.util.Iterator;
 import java.util.Set;
-import java.util.StringTokenizer;
 
 /**
  * The QueryEngine class supports the execution of Knowledge 
