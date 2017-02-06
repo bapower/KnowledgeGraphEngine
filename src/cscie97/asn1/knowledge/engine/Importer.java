@@ -19,7 +19,7 @@ public class Importer {
 	 * error accessing or processing the input Triple File.
 	 * @param fileName - Should be valid .nt file containing triples.
 	 */
-	public void importTripleFile(String fileName) {
+	public static void importTripleFile(String fileName) {
 
 		File file = new File(fileName);
 		if(! file.exists()){

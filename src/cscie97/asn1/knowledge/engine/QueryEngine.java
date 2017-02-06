@@ -22,7 +22,7 @@ public class QueryEngine {
 	 * query string. Throws QueryEngineException on error.
 	 * @param query 
 	 */
-	public void executeQuery(String query) {
+	public static void executeQuery(String query) {
        KnowledgeGraph knowledgeGraph = KnowledgeGraph.getInstance();
        query = query.replace(".", "");
        String words[] = query.split("\\s+");
@@ -50,7 +50,7 @@ public class QueryEngine {
 	 * on error.
 	 * @param fileName 
 	 */
-	public void executeQueryFile(String fileName) {
+	public static void executeQueryFile(String fileName) {
 		// Checks to assure file name is valid
 		File file = new File(fileName);
 		if(! file.exists()){
