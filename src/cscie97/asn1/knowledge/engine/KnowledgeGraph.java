@@ -95,19 +95,13 @@ public class KnowledgeGraph {
 			}
 		}
 		
-		// returns a set of matching triples
-		// inputs form of a triple
-		// don't return anything redundant.
-		public Set<Triple> executeQuery(String subject, String Predicate, String Object) {
-	        // ...
+		// returns a set of matching triples or an empty set if none found
+
+		public Set<Triple> executeQuery(String subject, String predicate, String object) {
+			String key = subject+" "+predicate+" "+object;
+	        return ((queryMapSet.get(key) == null) ? new HashSet<Triple>() : queryMapSet.get(key));
 	    }
-		
-		// singleton - only one instance of the knowledge graph.
-		KnowledgeGraph knowledgeGraph = new KnowledgeGraph();
-		
-		
-	
-		
+			
 		/**
 		 * 
 		 * @param identifier
