@@ -19,7 +19,22 @@ import java.util.*;
  * 
  */
 public class KnowledgeGraph {
-	
-	
-	
+		
+		private static KnowledgeGraph instance = null;
+		
+		/**
+		 * This method returns a reference to the single static 
+		 * instance of the KnowledgeGraph
+		 * @return knowledgeGraph instance
+		 */
+		protected KnowledgeGraph() {
+		      // instantiation is protected
+		   }
+		   public static KnowledgeGraph getInstance() {
+		      if(instance == null) {
+		         instance = new KnowledgeGraph();
+		      }
+		      return instance;
+		   }
+			
 }
