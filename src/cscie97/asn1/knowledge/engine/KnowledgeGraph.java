@@ -99,48 +99,38 @@ public class KnowledgeGraph {
 
 		public Set<Triple> executeQuery(String subject, String predicate, String object) {
 			String key = subject+" "+predicate+" "+object;
-	        return ((queryMapSet.get(key) == null) ? new HashSet<Triple>() : queryMapSet.get(key));
+			Set<Triple> tripleSet = queryMapSet.get(key);
+	        return ((tripleSet == null) ? new HashSet<Triple>() : tripleSet);
 	    }
 			
 		/**
 		 * 
 		 * @param identifier
-		 * @return
+		 * @return Node
 		 */
 		Node getNode (String identifier){
-			// Update this method to use a nodeMap to look up a node. 
-			// If the node doesn't exist, create it and add it to the map
+			Node node = nodeMap.get(identifier.toLowerCase());
+			return ((node == null) ? new Node(identifier.toLowerCase()) : node);
 		}
 		
 		/**
 		 * 
 		 * @param identifier
-		 * @return
+		 * @return Predicate
 		 */
 		Predicate getPredicate (String identifier){
-			// Update this method to use predicateMap to look up a predicate. 
-			// If the predicate doesn't exist, create it and add it to the map
+			Predicate predicate = predicateMap.get(identifier.toLowerCase());
+			return ((predicate == null) ? new Predicate(identifier.toLowerCase()) : predicate);
 		}
 		
 		/**
 		 * 
 		 * @param identifier
-		 * @return
+		 * @return Triple
 		 */
 		Triple getTriple (Node subject, Predicate predicate, Node object){
-			// Update this method to use tripleMap to look up a triple. 
-			// If the triple doesn't exist, create it and add it to the map
+			String identifier = subject.getIdentifer()+" "+predicate.getIdentifer()+" "+object.getIdentifer();
+			Triple triple = tripleMap.get(identifier.toLowerCase());
+			return ((triple == null) ? new Triple(subject.getIdentifer(), predicate.getIdentifer(), object.getIdentifer()) : triple);
 		}
-		
-		
-
-		public static void main (String args[]) {
-			
-			String fileName = "inputTriples.nt";
-			Importer input = new Importer();
-			input.importTripleFile(fileName);
-			
-		
-		}
-	
 }

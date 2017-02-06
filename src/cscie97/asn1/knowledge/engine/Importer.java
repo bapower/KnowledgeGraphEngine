@@ -26,8 +26,6 @@ public class Importer {
 			// Throw ImportException
 		}
 
-		List<Triple> tripleList = new ArrayList<Triple>();
-
 		try (BufferedReader br = new BufferedReader (new FileReader (fileName))) {
 			String line;
 			while ((line = br.readLine()) != null) {
@@ -38,17 +36,12 @@ public class Importer {
 				String objectInput = null;
 				if(token.hasMoreTokens())
 					subjectInput = token.nextToken();
-					Node subject = new Node(subjectInput);
 				if(token.hasMoreTokens())
 					predicateInput = token.nextToken();
-					Predicate predicate = new Predicate(predicateInput);
 				if(token.hasMoreTokens())
 					objectInput = token.nextToken();
-					Node object = new Node(objectInput);
 
-				Triple triple = new Triple(subjectInput, predicateInput, objectInput);
-				tripleList.add(triple);
-			    KnowledgeGraph.importTriple(tripleList);
+			    KnowledgeGraph.importTriple(subjectInput, predicateInput, objectInput);
 			}
 		} catch (IOException e) {
 			e.printStackTrace();
