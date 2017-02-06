@@ -10,9 +10,8 @@ import cscie97.asn1.knowledge.engine.QueryEngine;
  *
  */
 public class TestDriver {
-
-	static void main(String tripleFile, String queryFile){
-		Importer.importTripleFile(tripleFile);
-		QueryEngine.executeQueryFile(queryFile);	
+	public static void main(String args[]) {
+		Importer.importTripleFile(args[0]);
+		QueryEngine.executeQueryFile(args[1]);	
 	}
 }

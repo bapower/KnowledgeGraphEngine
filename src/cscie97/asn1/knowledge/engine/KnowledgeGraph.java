@@ -63,12 +63,13 @@ public class KnowledgeGraph {
 	        Node subject = new Node(subjectIdentifier);
 	        Node object = new Node(objectIdentifier);
 	        Predicate predicate = new Predicate(predicateIdentifier);
-	        Triple triple = new Triple(predicateIdentifier, predicateIdentifier, objectIdentifier);
+
+	        Triple triple = new Triple(subjectIdentifier, predicateIdentifier, objectIdentifier);
 	        
-			nodeMap.put(subjectIdentifier, subject);
-			nodeMap.put(objectIdentifier, object);
-			predicateMap.put(predicateIdentifier, predicate);
-			tripleMap.put(triple.getIdentifier(), triple);
+			nodeMap.put(subjectIdentifier.toLowerCase(), subject);
+			nodeMap.put(objectIdentifier.toLowerCase().replace(".", ""), object);
+			predicateMap.put(predicateIdentifier.toLowerCase(), predicate);
+			tripleMap.put(triple.getIdentifier().toLowerCase().replace(".", ""), triple);
 			
 			addPermutationToQueryMapSet(subjectIdentifier+" "+predicateIdentifier+" "+objectIdentifier, triple);
 			addPermutationToQueryMapSet(subjectIdentifier+" "+predicateIdentifier+" ?", triple);
@@ -82,23 +83,23 @@ public class KnowledgeGraph {
 	    }
 		
 		private static void addPermutationToQueryMapSet (String permutation, Triple triple) {
-			if(!queryMapSet.containsKey(permutation)) {
+			if(!queryMapSet.containsKey(permutation.toLowerCase().replace(".", ""))) {
 				Set<Triple> tripleSet = new HashSet<Triple>();
 				tripleSet.add(triple);
-				queryMapSet.put(permutation, tripleSet);
+				queryMapSet.put(permutation.toLowerCase().replace(".", ""), tripleSet);
 			} else {
-				Set<Triple> tripleSet = queryMapSet.get(permutation);
+				Set<Triple> tripleSet = queryMapSet.get(permutation.toLowerCase().replace(".", ""));
 				if(!tripleSet.contains(triple)){
 					tripleSet.add(triple);
 				}
-				queryMapSet.put(permutation, tripleSet);	
+				queryMapSet.put(permutation.toLowerCase().replace(".", ""), tripleSet);	
 			}
 		}
 		
 		// returns a set of matching triples or an empty set if none found
 
 		public Set<Triple> executeQuery(String subject, String predicate, String object) {
-			String key = subject+" "+predicate+" "+object;
+			String key = subject.toLowerCase()+" "+predicate.toLowerCase()+" "+object.toLowerCase().replace(".", "");
 			Set<Triple> tripleSet = queryMapSet.get(key);
 	        return ((tripleSet == null) ? new HashSet<Triple>() : tripleSet);
 	    }

@@ -23,18 +23,19 @@ public class QueryEngine {
 	 * @param query 
 	 */
 	public static void executeQuery(String query) {
-       KnowledgeGraph knowledgeGraph = KnowledgeGraph.getInstance();
-       query = query.replace(".", "");
-       String words[] = query.split("\\s+");
+		System.out.println(query);
+		KnowledgeGraph knowledgeGraph = KnowledgeGraph.getInstance();
+		query = query.replace(".", "").toLowerCase();
+		String words[] = query.split("\\s+");
        
-       if (words.length != 3) {
+		if (words.length != 3) {
     	  //Throw QueryEngineException
-       }
+		}
        
-       Set<Triple> results = knowledgeGraph.executeQuery(words[0], words[1], words[2]);
-       if(results.isEmpty()) {
+		Set<Triple> results = knowledgeGraph.executeQuery(words[0], words[1], words[2]);
+		if(results.isEmpty()) {
     	   System.out.println("<null>");
-       }else {
+		}else {
     	   Iterator<Triple> iterator = results.iterator();
     	   while(iterator.hasNext()){ 
     		   System.out.println(iterator.next().getIdentifier());
