@@ -4,8 +4,8 @@ import java.util.*;
 
 
 /**
- * <h1>Knowledge Graph</h1>
- * <p>
+ * Knowledge Graph
+ *
  * The KnowledgeGraph program implements a simple knowledge graph engine. 
  * Knowledge graphs are an important method of capturing semantic information, 
  * and a core building block for the Semantic Web. A knowledge graph is a 
@@ -45,6 +45,10 @@ public class KnowledgeGraph {
 		      // instantiation is protected
 		}
 		
+		/**
+		 *  instantiate or get the singleton instance of this class or 
+		 * @return KnowledgeGraph instance
+		 */
 		public static KnowledgeGraph getInstance() {
 		      if(instance == null) {
 		         instance = new KnowledgeGraph();
@@ -55,9 +59,9 @@ public class KnowledgeGraph {
 
 		/**
 		 * Public method for adding a Triple to the KnowledgeGraph.
-		 * @param subject
-		 * @param predicate
-		 * @param obje2ct
+		 * @param subjectIdentifier unique string identifier for the subject
+		 * @param predicateIdentifier unique string identifier for the predicate
+		 * @param objectIdentifier unique string identifier for the object
 		 */
 		public static void importTriple(String subjectIdentifier, String predicateIdentifier, String objectIdentifier) {
 	        Node subject = new Node(subjectIdentifier);
@@ -82,6 +86,11 @@ public class KnowledgeGraph {
 			
 	    }
 		
+		/**
+		 * 
+		 * @param permutation
+		 * @param triple
+		 */
 		private static void addPermutationToQueryMapSet (String permutation, Triple triple) {
 			if(!queryMapSet.containsKey(permutation.toLowerCase().replace(".", ""))) {
 				Set<Triple> tripleSet = new HashSet<Triple>();
@@ -96,8 +105,13 @@ public class KnowledgeGraph {
 			}
 		}
 		
-		// returns a set of matching triples or an empty set if none found
-
+		/**
+		 * 
+		 * @param subject unique string identifier for the subject
+		 * @param predicate unique string identifier for the predicate
+		 * @param object unique string identifier for the object
+		 * @return Set a set of matching triples or an empty set if none found
+		 */
 		public Set<Triple> executeQuery(String subject, String predicate, String object) {
 			String key = subject.toLowerCase()+" "+predicate.toLowerCase()+" "+object.toLowerCase().replace(".", "");
 			Set<Triple> tripleSet = queryMapSet.get(key);

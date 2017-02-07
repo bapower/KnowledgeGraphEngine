@@ -6,6 +6,8 @@ import java.io.IOException;
 import java.io.File;
 import java.util.*;
 
+import cscie97.asn1.exception.ImportException;
+
 /**
  * The Importer class is responsible for reading triples 
  * from input files using N-Triple format.
@@ -18,16 +20,20 @@ public class Importer {
 	 * valid input file  name. Throws ImportException on 
 	 * error accessing or processing the input Triple File.
 	 * @param fileName - Should be valid .nt file containing triples.
+	 * @throws ImportException 
+	 * @throws IOException 
 	 */
-	public static void importTripleFile(String fileName) {
+	public static void importTripleFile(String fileName) throws ImportException, IOException {
 
 		File file = new File(fileName);
-		if(! file.exists()){
-			// Throw ImportException
+		if(!file.exists()){
+			ImportException importException = new ImportException(0, "", "Input file "+fileName+" does not exist");
+			throw importException;
 		}
 
 		try (BufferedReader br = new BufferedReader (new FileReader (fileName))) {
 			String line;
+			int lineNumber = 1;
 			while ((line = br.readLine()) != null) {
 				// Parses each line to determine what is the subject, predicate, and the object
 				StringTokenizer token = new StringTokenizer(line);
@@ -36,17 +42,30 @@ public class Importer {
 				String objectInput = null;
 				
 				if(token.hasMoreTokens())
-					subjectInput = token.nextToken();
+					subjectInput = token.nextToken().trim();
 				if(token.hasMoreTokens())
-					predicateInput = token.nextToken();
+					predicateInput = token.nextToken().trim();
 				if(token.hasMoreTokens())
-					objectInput = token.nextToken();
-				if (predicateInput != null && predicateInput != null && objectInput != null) {
+					objectInput = token.nextToken().trim();
+				if(token.hasMoreTokens()) {
+					ImportException importException = new ImportException(lineNumber, line, "A triple in the file contains too many values");
+					throw importException;
+				}
+				
+				if (predicateInput == null && predicateInput == null && objectInput == null) {
+					ImportException importException = new ImportException(lineNumber, line, "Triple file contains blank line");
+					System.out.println("ImportException on line "+importException.getLineNumber()+": "+importException.getMessage());
+				}else if (predicateInput == null || predicateInput == null || objectInput == null) {
+					ImportException importException = new ImportException(lineNumber, line, "A triple in the file contains too few values");
+					throw importException;
+				} else {
 					KnowledgeGraph.importTriple(subjectInput, predicateInput, objectInput);
 				}
+				
+				lineNumber++;
 			}
 		} catch (IOException e) {
-			e.printStackTrace();
+			throw e;
 		}
 	}
 }
